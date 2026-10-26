@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Incidents — RootSignal{% endblock %}
+{% block content %}
+<p class="page-title">Recent Incidents</p>
+<p class="subtitle">Last 20 incidents across all services</p>
+
+{% if incidents %}
+<table>
+  <thead>
+    <tr>
+      <th>Service</th>
+      <th>Title</th>
+      <th>Severity</th>
+      <th>Confidence</th>
+      <th>Status</th>
+      <th>Started</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in incidents %}
+    <tr>
+      <td><code style="background:#0a0d14; padding:2px 6px; border-radius:3px; font-size:12px">{{ row.incident.service_name }}</code></td>
+      <td><a href="/dashboard/incidents/{{ row.incident.id }}">{{ row.incident.alert_title[:80] }}{% if row.incident.alert_title|length > 80 %}…{% endif %}</a></td>
+      <td><span class="badge badge-{{ row.incident.severity }}">{{ row.incident.severity }}</span></td>
+      <td>
+        {% if row.analysis %}
+          {% set conf = row.analysis.confidence %}
+          <span class="badge badge-{{ 'green' if conf == 'high' else 'yellow' if conf == 'medium' else 'red' }}">{{ conf }}</span>
+        {% else %}
+          <span style="color:#475569; font-size:12px">Pending</span>
+        {% endif %}
+      </td>
+      <td><span class="badge badge-{{ row.incident.status }}">{{ row.incident.status }}</span></td>
+      <td style="color:#64748b; font-size:12px; white-space:nowrap">{{ row.incident.started_at.strftime('%b %d %H:%M UTC') }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<div class="card" style="margin-top:40px; text-align:center; padding:48px">
+  <p style="color:#64748b; font-size:14px">No incidents yet. Configure a webhook to start receiving alerts.</p>
+</div>
+{% endif %}
+{% endblock %}

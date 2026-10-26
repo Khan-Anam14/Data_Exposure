@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Sign In — RootSignal{% endblock %}
+{% block content %}
+<div style="max-width:400px; margin:80px auto;">
+  <div class="card">
+    <h2 style="margin-bottom:4px">Sign In</h2>
+    <p style="color:#64748b; font-size:13px; margin-bottom:20px">Enter your API key to access the dashboard</p>
+    <form method="POST" action="/dashboard/login">
+      <input
+        name="api_key"
+        type="password"
+        placeholder="Your API key"
+        autocomplete="current-password"
+        style="width:100%; padding:10px 12px; background:#0f1117; border:1px solid #1e2433; color:#e2e8f0; border-radius:6px; font-size:14px; outline:none;"
+      >
+      {% if error %}
+      <p style="color:#fca5a5; font-size:13px; margin-top:10px">{{ error }}</p>
+      {% endif %}
+      <button
+        type="submit"
+        style="background:#3b82f6; color:white; border:none; padding:10px 0; border-radius:6px; cursor:pointer; font-size:14px; width:100%; margin-top:16px; font-weight:500;"
+      >Sign In</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

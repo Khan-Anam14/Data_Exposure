@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}RootSignal{% endblock %}</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0f1117; color: #e2e8f0; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 24px; }
+    header { padding: 16px 24px; border-bottom: 1px solid #1e2433; display: flex; align-items: center; gap: 12px; background: #0a0d14; }
+    header h1 { font-size: 18px; font-weight: 600; color: #f8fafc; }
+    header nav { margin-left: auto; }
+    header nav a { color: #64748b; font-size: 13px; text-decoration: none; margin-left: 20px; }
+    header nav a:hover { color: #e2e8f0; }
+    .badge { padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; display: inline-block; }
+    .badge-high { background: #7f1d1d; color: #fca5a5; }
+    .badge-low { background: #1e3a5f; color: #93c5fd; }
+    .badge-active { background: #78350f; color: #fcd34d; }
+    .badge-resolved { background: #14532d; color: #86efac; }
+    .badge-green { background: #14532d; color: #86efac; }
+    .badge-yellow { background: #78350f; color: #fcd34d; }
+    .badge-red { background: #7f1d1d; color: #fca5a5; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th { text-align: left; padding: 10px 12px; font-size: 11px; text-transform: uppercase; color: #64748b; border-bottom: 1px solid #1e2433; letter-spacing: 0.05em; }
+    td { padding: 12px; border-bottom: 1px solid #1e2433; font-size: 14px; }
+    tr:hover td { background: #161b27; }
+    a { color: #60a5fa; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .card { background: #161b27; border: 1px solid #1e2433; border-radius: 8px; padding: 20px; margin-bottom: 16px; }
+    .card h2 { font-size: 15px; margin-bottom: 12px; color: #f8fafc; font-weight: 600; }
+    .label { font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .value { font-size: 14px; color: #e2e8f0; line-height: 1.5; }
+    pre { background: #0a0d14; padding: 16px; border-radius: 6px; overflow-x: auto; font-size: 13px; line-height: 1.6; border: 1px solid #1e2433; white-space: pre-wrap; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } }
+    .page-title { font-size: 22px; font-weight: 600; color: #f8fafc; margin: 24px 0 4px; }
+    .subtitle { font-size: 13px; color: #64748b; margin-bottom: 20px; }
+    details summary { cursor: pointer; color: #60a5fa; font-size: 14px; padding: 8px 0; }
+    details[open] summary { margin-bottom: 12px; }
+  </style>
+</head>
+<body>
+  <header>
+    <span style="font-size:20px">🚨</span>
+    <h1>RootSignal</h1>
+    <nav>
+      <a href="/dashboard">Incidents</a>
+      <a href="/dashboard/login">Sign out</a>
+    </nav>
+  </header>
+  <div class="container">
+    {% block content %}{% endblock %}
+  </div>
+</body>
+</html>

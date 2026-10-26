@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}{{ incident.alert_title[:60] }} — RootSignal{% endblock %}
+{% block content %}
+
+<div style="margin: 20px 0 4px">
+  <a href="/dashboard" style="color:#64748b; font-size:13px">← All incidents</a>
+</div>
+<p class="page-title">{{ incident.alert_title }}</p>
+<div style="display:flex; gap:8px; margin-bottom:24px; align-items:center">
+  <span class="badge badge-{{ incident.severity }}">{{ incident.severity }}</span>
+  <span class="badge badge-{{ incident.status }}">{{ incident.status }}</span>
+  <code style="background:#0a0d14; padding:2px 8px; border-radius:3px; font-size:12px; color:#94a3b8">{{ incident.service_name }}</code>
+  <span style="color:#475569; font-size:12px; margin-left:4px">{{ incident.started_at.strftime('%b %d, %Y %H:%M UTC') }}</span>
+</div>
+
+{% if analysis %}
+<div class="card">
+  <h2>
+    Root Cause
+    {% set conf = analysis.confidence %}
+    <span class="badge badge-{{ 'green' if conf == 'high' else 'yellow' if conf == 'medium' else 'red' }}" style="margin-left:8px">{{ conf }} confidence</span>
+  </h2>
+  <p class="value" style="font-size:15px; line-height:1.6">{{ analysis.root_cause }}</p>
+  {% if analysis.confidence_reason %}
+  <p style="color:#64748b; font-size:12px; margin-top:8px">{{ analysis.confidence_reason }}</p>
+  {% endif %}
+</div>
+
+<div class="grid-2">
+  <div class="card">
+    <h2>Evidence</h2>
+    {% if analysis.evidence %}
+    <ul style="list-style:none; padding:0">
+      {% for item in analysis.evidence %}
+      <li style="padding:6px 0; border-bottom:1px solid #1e2433; font-size:13px; color:#cbd5e1">
+        <span style="color:#3b82f6; margin-right:6px">•</span>{{ item }}
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p style="color:#64748b; font-size:13px">No evidence signals captured.</p>
+    {% endif %}
+  </div>
+
+  <div class="card">
+    <h2>Suggested Fix</h2>
+    <p class="value">{{ analysis.suggested_fix }}</p>
+
+    {% if analysis.deploy_suspect %}
+    <div style="margin-top:16px; padding:12px; background:#0a0d14; border-radius:6px; border:1px solid #1e2433">
+      <p class="label">Suspect Deploy</p>
+      <p style="font-size:13px; margin-top:4px">
+        <code style="color:#f59e0b">{{ analysis.deploy_suspect.commit_sha }}</code>
+        by <strong>{{ analysis.deploy_suspect.author }}</strong>
+      </p>
+      <p style="color:#94a3b8; font-size:12px; margin-top:4px">"{{ analysis.deploy_suspect.message }}"</p>
+    </div>
+    {% endif %}
+
+    {% if analysis.llm_model %}
+    <p style="color:#475569; font-size:11px; margin-top:12px">
+      Analyzed by {{ analysis.llm_model }} · {{ analysis.prompt_tokens or '?' }} prompt tokens
+    </p>
+    {% endif %}
+  </div>
+</div>
+{% else %}
+<div class="card" style="text-align:center; padding:32px">
+  <p style="color:#64748b">Analysis in progress — check back shortly.</p>
+</div>
+{% endif %}
+
+{% if postmortem %}
+<div class="card" style="margin-top:8px">
+  <details>
+    <summary>📄 Postmortem Draft</summary>
+    <pre>{{ postmortem.draft_markdown }}</pre>
+  </details>
+</div>
+{% endif %}
+
+{% endblock %}
